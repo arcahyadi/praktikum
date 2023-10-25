@@ -10,20 +10,25 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
+$id = $_GET["id"];
+$query_lokasi = "SELECT * FROM lokasi WHERE id = $id";
+$result_lokasi = mysqli_query($conn, $query_lokasi);
+$row_lokasi = mysqli_fetch_assoc($result_lokasi);
+
 if (isset($_POST["submit"])) {
     $nama_lokasi = htmlspecialchars($_POST["nama_lokasi"]);
-    $query = "INSERT INTO lokasi VALUES ('', '$nama_lokasi')";
-    $simpan = mysqli_query($conn, $query);
+    $query = "UPDATE lokasi SET nama_lokasi = '$nama_lokasi' WHERE id = $id";
+    $edit = mysqli_query($conn, $query);
 
-    if ($simpan) {
+    if ($edit) {
         echo "<script type='text/javascript'>
-                alert('Data berhasil disimpan!');
+                alert('Data berhasil diedit!');
                 document.location.href = 'lokasi.php';
                 </script>";
     } else {
         echo "<script type='text/javascript'>
                 alert('Data gagal disimpan!');
-                document.location.href = 'lokasi.php';
+                document.location.href = 'lokasi.php?id=$id';
                 </script>";
     }
 }
@@ -58,7 +63,7 @@ if (isset($_POST["submit"])) {
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                                 <li class="breadcrumb-item">Lokasi</li>
-                                <li class="breadcrumb-item active">Tambah Lokasi</li>
+                                <li class="breadcrumb-item active">Edit Lokasi</li>
                             </ol>
                         </div>
                     </div>
@@ -70,13 +75,13 @@ if (isset($_POST["submit"])) {
                         <div class="col-12">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Tambah Data</h3>
+                                    <h3 class="card-title">Edit Data</h3>
                                 </div>
                                 <form action="" method="post">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="nama_lokasi">Nama Lokasi</label>
-                                            <input type="text" class="form-control" id="nama_lokasi" name="nama_lokasi" placeholder="Kabupaten/Kota" required>
+                                            <input type="text" class="form-control" id="nama_lokasi" value="<?php echo $row_lokasi["nama_lokasi"] ?>" name="nama_lokasi" placeholder="Kabupaten/Kota" required>
                                         </div>
                                     </div>
                                     <div class="card-footer">

@@ -13,6 +13,7 @@ if (!$_SESSION["login"]) {
 include '../koneksi.php';
 $query = "SELECT * FROM lokasi";
 $result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -74,9 +75,9 @@ $result = mysqli_query($conn, $query);
                                             <tr>
                                                 <td><?php echo $no; ?></td>
                                                 <td>
-                                                    <a href="lokasi-edit.php?id-<?php echo $row["id"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-edit"></i>Ubah</a>
-                                                    <a href="lokasi-hapus.php?id-<?php echo $row["id"]; ?>" class="btn btn-danger btn-xs text-light"
-                                                    onclick="javascript: return confirm('Apakah yakin ingin menghapus data ini??');"><i class="fa fa-trash"></i>Ubah</a>
+                                                    <a href="lokasi-edit.php?id=<?php echo $row["id"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-edit"></i>Ubah</a>
+                                                    <a href="lokasi-hapus.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger btn-xs text-light"
+                                                    onclick="javascript: return confirm('Apakah yakin ingin menghapus data ini??');"><i class="fa fa-trash"></i>Hapus</a>
                                                 </td>
                                                 <td><?php echo $row["nama_lokasi"]; ?></td>
                                             </tr>
