@@ -54,6 +54,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="honorer.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Honorer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="bagian.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Bagian</p>
