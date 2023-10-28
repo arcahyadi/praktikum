@@ -85,8 +85,8 @@ if (isset($_SESSION["login"])) {
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-block btn primary" name="login">Masuk</button>
-                            <a href="#" class="btn btn-block btn-danger">Buat Akun</a>
+                            <button type="submit" class="btn btn-block btn btn-primary" name="login">Masuk</button>
+                            <a href="" class="btn btn-block btn-danger">Buat Akun</a>
                         </div>
                     </div>
                 </form>
