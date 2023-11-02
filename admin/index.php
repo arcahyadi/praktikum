@@ -11,7 +11,7 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
-$query = "SELECT * FROM lokasi";
+$query = "SELECT * FROM lokas";
 $result = mysqli_query($conn, $query);
 ?>
 

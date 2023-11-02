@@ -89,19 +89,19 @@ if (isset($_POST["submit"])) {
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="nama_jabatan">Nama Jabatan</label>
-                                            <input type="text" class="form-control" value="<?php echo $row_jabatan["nama_jabatan"] ?>" id="nama_jabatan" name="nama_jabatan" placeholder="" required>
+                                            <input type="text" class="form-control" value="<?php echo $row_jabatan["nama_jabatan"] ?>" id="nama_jabatan" name="nama_jabatan" placeholder="Nama Jabatan" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="gapok_jabatan">Gapok</label>
-                                            <input type="number" class="form-control" value="<?php echo $row_jabatan["gapok_jabatan"] ?>" id="gapok_jabatan" name="gapok_jabatan" placeholder="" required>
+                                            <input type="number" class="form-control" value="<?php echo $row_jabatan["gapok_jabatan"] ?>" id="gapok_jabatan" name="gapok_jabatan" placeholder="Gaji Pokok Jabatan" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="tunjangan_jabatan">Tunjangan</label>
-                                            <input type="number" class="form-control" value="<?php echo $row_jabatan["tunjangan_jabatan"] ?>" id="tunjangan_jabatan" name="tunjangan_jabatan" placeholder="" required>
+                                            <input type="number" class="form-control" value="<?php echo $row_jabatan["tunjangan_jabatan"] ?>" id="tunjangan_jabatan" name="tunjangan_jabatan" placeholder="Tunjangan Jabatan" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="uang_makan_perhari">Uang Makan</label>
-                                            <input type="number" class="form-control" value="<?php echo $row_jabatan["uang_makan_perhari"] ?>" id="uang_makan_perhari" name="uang_makan_perhari" placeholder="" required>
+                                            <input type="number" class="form-control" value="<?php echo $row_jabatan["uang_makan_perhari"] ?>" id="uang_makan_perhari" name="uang_makan_perhari" placeholder="Uang Makan Perhari" required>
                                         </div>
                                     </div>
                                     <div class="card-footer">

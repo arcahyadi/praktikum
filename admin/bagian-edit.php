@@ -10,6 +10,11 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
+$id = $_GET["id"];
+$query_honorer = "SELECT * FROM honorer WHERE id_honorer = $id";
+$result_honorer = mysqli_query($conn, $query_honorer);
+$row = mysqli_fetch_assoc($result_honorer);
+
 if (isset($_POST["submit"])) {
     $nama = htmlspecialchars($_POST["nama"]);
     $tanggal_lahir = htmlspecialchars($_POST["tanggal_lahir"]);
@@ -18,18 +23,24 @@ if (isset($_POST["submit"])) {
     $jenis_kelamin = htmlspecialchars($_POST["jenis_kelamin"]);
     $alamat = htmlspecialchars($_POST["alamat"]);
     $no_hp = htmlspecialchars($_POST["no_hp"]);
-    $query = "INSERT INTO honorer VALUES ('', '$nama','$tanggal_lahir','$tempat_lahir','$jenis_kelamin','$alamat','$no_hp')";
-    $simpan = mysqli_query($conn, $query);
+    $query = "UPDATE honorer SET nama = '$nama',
+    tanggal_lahir = '$tanggal_lahir',
+    tempat_lahir = '$tempat_lahir',
+    jenis_kelamin = '$jenis_kelamin',
+    alamat = '$alamat',
+    no_hp = '$no_hp' WHERE id_honorer = $id;
+    ";
+    $edit = mysqli_query($conn, $query);
 
-    if ($simpan) {
+    if ($edit) {
         echo "<script type='text/javascript'>
-                alert('Data berhasil disimpan!');
+                alert('Data berhasil diedit!');
                 document.location.href = 'honorer.php';
                 </script>";
     } else {
         echo "<script type='text/javascript'>
                 alert('Data gagal disimpan!');
-                document.location.href = 'honorer-tambah.php';
+                document.location.href = 'honorer-edit.php?id=$id';
                 </script>";
     }
 }
@@ -40,7 +51,7 @@ if (isset($_POST["submit"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAMBAH DATA HONORER Praktikum FTI UNISKA 2023</title>
+    <title>EDIT DATA HONORER Praktikum FTI UNISKA 2023</title>
     <link rel="stylesheet" href="https://font.googleapis.com/css?family=Source+Sans+Pro:400,400,400i,700&display=fallback">
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -64,7 +75,7 @@ if (isset($_POST["submit"])) {
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                                 <li class="breadcrumb-item">Honorer</li>
-                                <li class="breadcrumb-item active">Tambah Honorer</li>
+                                <li class="breadcrumb-item active">Edit Honorer</li>
                             </ol>
                         </div>
                     </div>
@@ -76,21 +87,21 @@ if (isset($_POST["submit"])) {
                         <div class="col-12">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Tambah Data</h3>
+                                    <h3 class="card-title">Edit Data</h3>
                                 </div>
                                 <form action="" method="post">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="nama">Nama Honorer</label>
-                                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Honorer" required>
+                                            <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $row["nama"] ?>" placeholder="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir" required>
+                                            <input type="date" value="<?php echo $row["tanggal_lahir"] ?>" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="tempat_lahir">Tempat Lahir</label>
-                                            <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
+                                            <input type="text" value="<?php echo $row["tempat_lahir"] ?>" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="jenis_kelamin">Jenis Kelamin</label>
@@ -101,11 +112,11 @@ if (isset($_POST["submit"])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="alamat">Alamat</label>
-                                            <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat" required>
+                                            <input type="text" value="<?php echo $row["alamat"] ?>" class="form-control" id="alamat" name="alamat" placeholder="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="no_hp">No HP</label>
-                                            <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="No HP" required>
+                                            <input type="text" value="<?php echo $row["no_hp"] ?>" class="form-control" id="no_hp" name="no_hp" placeholder="" required>
                                         </div>
                                     </div>
                                     <div class="card-footer">
