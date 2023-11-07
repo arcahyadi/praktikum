@@ -105,10 +105,10 @@ $result = mysqli_query($conn, $query);
                     </div>
                 </div>
             </section>
-
-            <?php include "theme-footer.php"; ?>
-
         </div>
+        
+        <?php include "theme-footer.php"; ?>
+
     </div>
     <script src="../plugins/jquery/jquery.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
