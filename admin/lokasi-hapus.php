@@ -11,7 +11,7 @@ if (!$_SESSION["login"]) {
 
 include '../koneksi.php';
 $id = $_GET["id"];
-$query = "DELETE FROM lokasi WHERE id = $id";
+$query = "DELETE FROM lokasi WHERE id_lokasi = $id";
 $delete = mysqli_query($conn, $query);
 
 if ($delete) {

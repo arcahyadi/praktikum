@@ -11,13 +11,13 @@ if (!$_SESSION["login"]) {
 
 include '../koneksi.php';
 $id = $_GET["id"];
-$query_lokasi = "SELECT * FROM lokasi WHERE id = $id";
+$query_lokasi = "SELECT * FROM lokasi WHERE id_lokasi = $id";
 $result_lokasi = mysqli_query($conn, $query_lokasi);
 $row_lokasi = mysqli_fetch_assoc($result_lokasi);
 
 if (isset($_POST["submit"])) {
     $nama_lokasi = htmlspecialchars($_POST["nama_lokasi"]);
-    $query = "UPDATE lokasi SET nama_lokasi = '$nama_lokasi' WHERE id = $id";
+    $query = "UPDATE lokasi SET nama_lokasi = '$nama_lokasi' WHERE id_lokasi = $id";
     $edit = mysqli_query($conn, $query);
 
     if ($edit) {

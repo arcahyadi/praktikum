@@ -11,18 +11,18 @@ if (!$_SESSION["login"]) {
 
 include '../koneksi.php';
 $id = $_GET["id"];
-$query = "DELETE FROM honorer WHERE id_honorer = $id";
+$query = "DELETE FROM bagian WHERE id_bagian = $id";
 $delete = mysqli_query($conn, $query);
 
 if ($delete) {
     echo "<script type='text/javascript'>
                 alert('Data berhasil dihapus!');
-                document.location.href = 'honorer.php?id=$id';
+                document.location.href = 'bagian.php';
                 </script>";
 } else {
     echo "<script type='text/javascript'>
             alert('Data gagal dihapus!');
-            document.location.href = 'honorer.php?id=$id';
+            document.location.href = 'bagian.php';
             </script>";
 }
 ?>

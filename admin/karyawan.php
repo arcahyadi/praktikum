@@ -2,7 +2,7 @@
 session_start();
 // session_destroy();
 if ($_SESSION["peran"] == "USER") {
-    header("Location: done.php");
+    header("Location: logout.php");
     exit;
 }
 if (!$_SESSION["login"]) {
@@ -11,7 +11,25 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
-$query = "SELECT * FROM karyawan";
+$query = "SELECT K.*,
+(SELECT J.nama_jabatan
+FROM jabatan_karyawan JK
+INNER JOIN jabatan J ON JK.jabatan_id = J.id_jabatan
+WHERE karyawan_id = K.id_karyawan
+ORDER BY JK.tanggal_mulai DESC LIMIT 1
+) jabatan_terkini
+FROM Karyawan K";
+
+// $query = "SELECT K.*,(
+//     SELECT J.nama_jabatan
+//     FROM jabatan JK
+//     INNER JOIN jabatan J
+//     ON JK.id_jabatan = J.id_jabatan
+//     INNER JOIN karyawan KA
+//     WHERE KA.id_karyawan = K.id_karyawan
+//     ORDER BY KA.tanggal_masuk DESC LIMIT 1
+//     ) jabatan_terkini
+//     FROM karyawan K";
 $result = mysqli_query($conn, $query);
 // $row = mysqli_fetch_assoc($result);
 
@@ -66,6 +84,7 @@ $result = mysqli_query($conn, $query);
                                             <tr>
                                                 <th>No</th>
                                                 <th>Action</th>
+                                                <th>Jabatan Terkini</th>
                                                 <th>Nama Karyawan</th>
                                                 <th>NIK</th>
                                                 <th>Handphone</th>
@@ -82,12 +101,12 @@ $result = mysqli_query($conn, $query);
                                                         <a href="karyawan-edit.php?id=<?php echo $row["id_karyawan"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-edit"></i>Ubah</a>
                                                         <a href="karyawan-hapus.php?id=<?php echo $row["id_karyawan"]; ?>" class="btn btn-danger btn-xs text-light" onclick="javascript: return confirm('Apakah yakin ingin menghapus data ini??');"><i class="fa fa-trash"></i>Hapus</a>
                                                     </td>
-                                                    <td><?php echo $row["nama"]; ?></td>
-                                                    <td><?php echo $row["tanggal_lahir"]; ?></td>
-                                                    <td><?php echo $row["tempat_lahir"]; ?></td>
-                                                    <td><?php echo $row["jenis_kelamin"]; ?></td>
-                                                    <td><?php echo $row["alamat"]; ?></td>
-                                                    <td><?php echo $row["no_hp"]; ?></td>
+                                                    <td><?php echo $row["jabatan_terkini"]; ?></td>
+                                                    <td><?php echo $row["nama_lengkap"]; ?></td>
+                                                    <td><?php echo $row["nik"]; ?></td>
+                                                    <td><?php echo $row["handphone"]; ?></td>
+                                                    <td><?php echo $row["email"]; ?></td>
+                                                    <td><?php echo $row["tanggal_masuk"]; ?></td>
                                                 </tr>
                                             <?php $no++;
                                             } ?>
@@ -96,6 +115,7 @@ $result = mysqli_query($conn, $query);
                                             <tr>
                                                 <th>No</th>
                                                 <th>Action</th>
+                                                <th>Jabatan Terkini</th>
                                                 <th>Nama Karyawan</th>
                                                 <th>NIK</th>
                                                 <th>Handphone</th>

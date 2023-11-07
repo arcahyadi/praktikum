@@ -11,36 +11,29 @@ if (!$_SESSION["login"]) {
 
 include '../koneksi.php';
 $id = $_GET["id"];
-$query_honorer = "SELECT * FROM honorer WHERE id_honorer = $id";
-$result_honorer = mysqli_query($conn, $query_honorer);
-$row = mysqli_fetch_assoc($result_honorer);
+$query_bagian = "SELECT * FROM bagian WHERE id_bagian = $id";
+$result_bagian = mysqli_query($conn, $query_bagian);
+$row_bagian = mysqli_fetch_assoc($result_bagian);
 
 if (isset($_POST["submit"])) {
-    $nama = htmlspecialchars($_POST["nama"]);
-    $tanggal_lahir = htmlspecialchars($_POST["tanggal_lahir"]);
-    // $tanggal_lahir_mysql = date('Y-m-d', strtotime($tanggal_lahir));
-    $tempat_lahir = htmlspecialchars($_POST["tempat_lahir"]);
-    $jenis_kelamin = htmlspecialchars($_POST["jenis_kelamin"]);
-    $alamat = htmlspecialchars($_POST["alamat"]);
-    $no_hp = htmlspecialchars($_POST["no_hp"]);
-    $query = "UPDATE honorer SET nama = '$nama',
-    tanggal_lahir = '$tanggal_lahir',
-    tempat_lahir = '$tempat_lahir',
-    jenis_kelamin = '$jenis_kelamin',
-    alamat = '$alamat',
-    no_hp = '$no_hp' WHERE id_honorer = $id;
+    $nama_bagian = htmlspecialchars($_POST["nama_bagian"]);
+    $karyawan_id = htmlspecialchars($_POST["karyawan_id"]);
+    $lokasi_id = htmlspecialchars($_POST["lokasi_id"]);
+    $query = "UPDATE bagian SET nama_bagian = '$nama_bagian',
+    karyawan_id = '$karyawan_id',
+    lokasi_id = '$lokasi_id' WHERE id_bagian = $id;
     ";
     $edit = mysqli_query($conn, $query);
 
     if ($edit) {
         echo "<script type='text/javascript'>
                 alert('Data berhasil diedit!');
-                document.location.href = 'honorer.php';
+                document.location.href = 'bagian.php';
                 </script>";
     } else {
         echo "<script type='text/javascript'>
                 alert('Data gagal disimpan!');
-                document.location.href = 'honorer-edit.php?id=$id';
+                document.location.href = 'bagian-edit.php?id=$id';
                 </script>";
     }
 }
@@ -51,7 +44,7 @@ if (isset($_POST["submit"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDIT DATA HONORER Praktikum FTI UNISKA 2023</title>
+    <title>EDIT DATA bagian Praktikum FTI UNISKA 2023</title>
     <link rel="stylesheet" href="https://font.googleapis.com/css?family=Source+Sans+Pro:400,400,400i,700&display=fallback">
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -69,13 +62,13 @@ if (isset($_POST["submit"])) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Honorer</h1>
+                            <h1>Data bagian</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                                <li class="breadcrumb-item">Honorer</li>
-                                <li class="breadcrumb-item active">Edit Honorer</li>
+                                <li class="breadcrumb-item">bagian</li>
+                                <li class="breadcrumb-item active">Edit bagian</li>
                             </ol>
                         </div>
                     </div>
@@ -92,37 +85,53 @@ if (isset($_POST["submit"])) {
                                 <form action="" method="post">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="nama">Nama Honorer</label>
-                                            <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $row["nama"] ?>" placeholder="" required>
+                                            <label for="nama_bagian">Nama bagian</label>
+                                            <input type="text" class="form-control" id="nama_bagian" name="nama_bagian" value="<?php echo $row_bagian["nama_bagian"] ?>" placeholder="Nama Bagian/Bidang" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="tanggal_lahir">Tanggal Lahir</label>
-                                            <input type="date" value="<?php echo $row["tanggal_lahir"] ?>" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tempat_lahir">Tempat Lahir</label>
-                                            <input type="text" value="<?php echo $row["tempat_lahir"] ?>" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jenis_kelamin">Jenis Kelamin</label>
-                                            <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
-                                                <option value="Laki-Laki">Laki-Laki</option>
-                                                <option value="Perempuan">Perempuan</option>
+                                            <label for="karyawan_id">Kepala Bagian</label>
+                                            <select type="date" class="form-control" id="karyawan_id" name="karyawan_id" required>
+                                                <option value="">-- Pilih Kepala Bagian --</option>
+                                                <?php
+                                                $query_karyawan = "SELECT * FROM karyawan";
+                                                $result_karyawan = mysqli_query($conn, $query_karyawan);
+                                                while ($row_karyawan = mysqli_fetch_assoc($result_karyawan)) {
+                                                ?>
+                                                    <option value="<?php echo $row_karyawan['id_karyawan'] ?>" <?php if (!(strcmp(
+                                                                                                                    $row_karyawan['id_karyawan'],
+                                                                                                                    htmlentities($row_bagian['karyawan_id'], ENT_COMPAT, 'utf-8')
+                                                                                                                ))) {
+                                                                                                                    echo "SELECTED";
+                                                                                                                } ?>>
+                                                        <?php echo $row_karyawan['nama_lengkap'] ?>
+                                                    </option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="alamat">Alamat</label>
-                                            <input type="text" value="<?php echo $row["alamat"] ?>" class="form-control" id="alamat" name="alamat" placeholder="" required>
+                                            <label for="lokasi_id">Lokasi</label>
+                                            <select type="date" class="form-control" id="lokasi_id" name="lokasi_id" required>
+                                                <option value="">-- Pilih Lokasi --</option>
+                                                <?php
+                                                $query_lokasi = "SELECT * FROM lokasi";
+                                                $result_lokasi = mysqli_query($conn, $query_lokasi);
+                                                while ($row_lokasi = mysqli_fetch_assoc($result_lokasi)) {
+                                                ?>
+                                                    <option value="<?php echo $row_lokasi['id_lokasi'] ?>" <?php if (!(strcmp(
+                                                                                                                    $row_lokasi['id_lokasi'],
+                                                                                                                    htmlentities($row_bagian['lokasi_id'], ENT_COMPAT, 'utf-8')
+                                                                                                                ))) {
+                                                                                                                    echo "SELECTED";
+                                                                                                                } ?>>
+                                                        <?php echo $row_lokasi['nama_lokasi'] ?>
+                                                    </option>
+                                                <?php } ?>
+                                            </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="no_hp">No HP</label>
-                                            <input type="text" value="<?php echo $row["no_hp"] ?>" class="form-control" id="no_hp" name="no_hp" placeholder="" required>
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary mr-1" name="submit">Simpan</button>
+                                            <a href="bagian.php" class="btn btn-secondary">Cancel</a>
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary mr-1" name="submit">Simpan</button>
-                                        <a href="honorer.php" class="btn btn-secondary">Cancel</a>
-                                    </div>
                                 </form>
                             </div>
                         </div>

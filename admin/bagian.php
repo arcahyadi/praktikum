@@ -2,7 +2,7 @@
 session_start();
 // session_destroy();
 if ($_SESSION["peran"] == "USER") {
-    header("Location: done.php");
+    header("Location: logout.php");
     exit;
 }
 if (!$_SESSION["login"]) {
@@ -11,12 +11,12 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
-$query = "SELECT
-bagian.id_bagian,
-karyawan.nama_lengkap,
+$query = "SELECT bagian.id_bagian,
+bagian.nama_bagian,
+karyawan.nama_lengkap, 
 lokasi.nama_lokasi
-FROM
-bagian, karyawan, lokasi";
+FROM bagian, karyawan, lokasi
+WHERE karyawan.id_karyawan = bagian.karyawan_id AND lokasi.id_lokasi = bagian.lokasi_id";
 $result = mysqli_query($conn, $query);
 // $row = mysqli_fetch_assoc($result);
 
@@ -71,7 +71,7 @@ $result = mysqli_query($conn, $query);
                                             <tr>
                                                 <th>No</th>
                                                 <th>Action</th>
-                                                <th>Nama Lengkap</th>
+                                                <th>Nama Bagian</th>
                                                 <th>Nama Lokasi</th>
                                             </tr>
                                         </thead>
@@ -84,7 +84,7 @@ $result = mysqli_query($conn, $query);
                                                         <a href="bagian-edit.php?id=<?php echo $row["id_bagian"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-edit"></i>Ubah</a>
                                                         <a href="bagian-hapus.php?id=<?php echo $row["id_bagian"]; ?>" class="btn btn-danger btn-xs text-light" onclick="javascript: return confirm('Apakah yakin ingin menghapus data ini??');"><i class="fa fa-trash"></i>Hapus</a>
                                                     </td>
-                                                    <td><?php echo $row["nama_lengkap"]; ?></td>
+                                                    <td><?php echo $row["nama_bagian"]; ?></td>
                                                     <td><?php echo $row["nama_lokasi"]; ?></td>
                                                 </tr>
                                             <?php $no++;

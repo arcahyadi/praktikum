@@ -11,9 +11,17 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
-$query = "SELECT * FROM lokasi";
+$query = "SELECT karyawan.nama_lengkap, jabatan_karyawan.*, jabatan.nama_jabatan, bagian_karyawan.bagian_id, bagian.nama_bagian
+FROM karyawan
+INNER JOIN jabatan_karyawan
+ON jabatan_karyawan.karyawan_id = karyawan.id_karyawan
+INNER JOIN jabatan
+ON jabatan.id_jabatan = jabatan_karyawan.jabatan_id
+INNER JOIN bagian_karyawan
+ON bagian_karyawan.jabatan_id = jabatan.id_jabatan
+INNER JOIN bagian
+on bagian.id_bagian = bagian_karyawan.bagian_id";
 $result = mysqli_query($conn, $query);
-// $row = mysqli_fetch_assoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -22,7 +30,7 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATA LOKASI Praktikum FTI UNISKA 2023</title>
+    <title>DATA Rekap Karyawan Praktikum FTI UNISKA 2023</title>
     <link rel="stylesheet" href="https://font.googleapis.com/css?family=Source+Sans+Pro:400,400,400i,700&display=fallback">
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -40,12 +48,12 @@ $result = mysqli_query($conn, $query);
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Lokasi</h1>
+                            <h1>Data Rekap Karyawan</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                                <li class="breadcrumb-item active">Lokasi</li>
+                                <li class="breadcrumb-item active">Rekap Karyawan</li>
                             </ol>
                         </div>
                     </div>
@@ -58,36 +66,35 @@ $result = mysqli_query($conn, $query);
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <a href="lokasi-tambah.php" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Tambah Data</a>
                                 </div>
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Action</th>
-                                                <th>Nama Lokasi</th>
+                                                <th>Nama</th>
+                                                <th>Jabatan</th>
+                                                <th>Bagian</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $no=1;
-                                            while ($row = mysqli_fetch_assoc($result)) {?>
-                                            <tr>
-                                                <td><?php echo $no; ?></td>
-                                                <td>
-                                                    <a href="lokasi-edit.php?id=<?php echo $row["id_lokasi"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-edit"></i>Ubah</a>
-                                                    <a href="lokasi-hapus.php?id=<?php echo $row["id_lokasi"]; ?>" class="btn btn-danger btn-xs text-light"
-                                                    onclick="javascript: return confirm('Apakah yakin ingin menghapus data ini??');"><i class="fa fa-trash"></i>Hapus</a>
-                                                </td>
-                                                <td><?php echo $row["nama_lokasi"]; ?></td>
-                                            </tr>
-                                            <?php $no++; } ?>
+                                            <?php $no = 1;
+                                            while ($row = mysqli_fetch_assoc($result)) { ?>
+                                                <tr>
+                                                    <td><?php echo $no; ?></td>
+                                                    <td><?php echo $row['nama_lengkap'] ?></td>
+                                                    <td><?php echo $row['nama_jabatan'] ?></td>
+                                                    <td><?php echo $row['nama_bagian'] ?></td>
+                                                </tr>
+                                            <?php $no++;
+                                            } ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Action</th>
-                                                <th>Nama Lokasi</th>
+                                            <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Jabatan</th>
+                                                <th>Bagian</th>
                                             </tr>
                                         </tfoot>
                                     </table>

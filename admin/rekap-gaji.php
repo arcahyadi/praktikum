@@ -11,9 +11,13 @@ if (!$_SESSION["login"]) {
 }
 
 include '../koneksi.php';
-$query = "SELECT * FROM lokasi";
+$query = "SELECT tahun,
+SUM(gapok) as gapok,
+SUM(tunjangan) as tunjangan,
+SUM(uang_makan) as uang_makan
+FROM penggajian
+GROUP BY tahun";
 $result = mysqli_query($conn, $query);
-// $row = mysqli_fetch_assoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -22,7 +26,7 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATA LOKASI Praktikum FTI UNISKA 2023</title>
+    <title>DATA JABATAN Praktikum FTI UNISKA 2023</title>
     <link rel="stylesheet" href="https://font.googleapis.com/css?family=Source+Sans+Pro:400,400,400i,700&display=fallback">
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -40,12 +44,12 @@ $result = mysqli_query($conn, $query);
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Lokasi</h1>
+                            <h1>Data Jabatan</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                                <li class="breadcrumb-item active">Lokasi</li>
+                                <li class="breadcrumb-item active">Jabatan</li>
                             </ol>
                         </div>
                     </div>
@@ -58,7 +62,7 @@ $result = mysqli_query($conn, $query);
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <a href="lokasi-tambah.php" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Tambah Data</a>
+                                    <!-- <a href="jabatan-tambah.php" class="btn btn-primary"><i class="fa fa-plus-circle"></i>Tambah Data</a> -->
                                 </div>
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
@@ -66,28 +70,40 @@ $result = mysqli_query($conn, $query);
                                             <tr>
                                                 <th>No</th>
                                                 <th>Action</th>
-                                                <th>Nama Lokasi</th>
+                                                <th>Tahun</th>
+                                                <th>Gapok</th>
+                                                <th>Tunjangan</th>
+                                                <th>Uang Makan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $no=1;
-                                            while ($row = mysqli_fetch_assoc($result)) {?>
-                                            <tr>
-                                                <td><?php echo $no; ?></td>
-                                                <td>
-                                                    <a href="lokasi-edit.php?id=<?php echo $row["id_lokasi"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-edit"></i>Ubah</a>
-                                                    <a href="lokasi-hapus.php?id=<?php echo $row["id_lokasi"]; ?>" class="btn btn-danger btn-xs text-light"
-                                                    onclick="javascript: return confirm('Apakah yakin ingin menghapus data ini??');"><i class="fa fa-trash"></i>Hapus</a>
-                                                </td>
-                                                <td><?php echo $row["nama_lokasi"]; ?></td>
-                                            </tr>
-                                            <?php $no++; } ?>
+                                            <?php $no = 1;
+                                            $jml_gapok = 0;
+                                            $jml_tunjangan = 0;
+                                            $jml_uang_makan = 0;
+                                            while ($row = mysqli_fetch_assoc($result)) { ?>
+                                                <tr>
+                                                    <td><?php echo $no; ?></td>
+                                                    <td>
+                                                        <a href="riwayat-gaji-bulan.php?tahun=<?php echo $row["tahun"]; ?>" class="btn btn-success btn-xs mr-1"><i class="fa fa-eye"></i>Per Bulan</a>
+                                                    </td>
+                                                    <td><?php echo $row['tahun'] ?></td>
+                                                    <td class="text-right"><?php echo 'Rp. ' . number_format($row["gapok"], 0, ',', '.') . ',-'; ?></td>
+                                                    <td class="text-right"><?php echo 'Rp. ' . number_format($row["tunjangan"], 0, ',', '.') . ',-'; ?></td>
+                                                    <td class="text-right"><?php echo 'Rp. ' . number_format($row["uang_makan"], 0, ',', '.') . ',-'; ?></td>
+                                                </tr>
+                                            <?php $no++;
+                                            $jml_gapok += $row['gapok'];
+                                            $jml_tunjangan += $row['tunjangan'];
+                                            $jml_uang_makan += $row['uang_makan'];
+                                            } ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Action</th>
-                                                <th>Nama Lokasi</th>
+                                                <th class="text-right" colspan="3">TOTAL</th>
+                                                <th class="text-right"><?php echo 'Rp. ' . number_format($jml_gapok, 0, ',', '.') . ',-'; ?></th>
+                                                <th class="text-right"><?php echo 'Rp. ' . number_format($jml_tunjangan, 0, ',', '.') . ',-'; ?></th>
+                                                <th class="text-right"><?php echo 'Rp. ' . number_format($jml_uang_makan, 0, ',', '.') . ',-'; ?></th>
                                             </tr>
                                         </tfoot>
                                     </table>

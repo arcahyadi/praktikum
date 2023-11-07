@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="karyawan.php" class="nav-link">
+                    <a href="gaji.php" class="nav-link">
                         <i class="nav-icon fas fa-wallet"></i>
                         <p>Gaji</p>
                     </a>
@@ -84,13 +84,19 @@
                         <li class="nav-item">
                             <a href="riwayat-gaji.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Gaji Per Karyawan</p>
+                                <p>REKAP GAJI KARYAWAN</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="slip-gaji.php" class="nav-link">
+                            <a href="riwayat-honorer.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Slip Gaji Per Karyawan</p>
+                                <p>REKAP GAJI HONORER</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rekap-karyawan.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>REKAP KARYAWAN</p>
                             </a>
                         </li>
                     </ul>
